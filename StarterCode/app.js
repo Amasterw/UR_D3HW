@@ -17,8 +17,7 @@ var smokes = [];
 
 
 //create wrapper
-var svg = d3
-    .select(".chart")
+var svg = d3.select("scatter")
     .append("svg")
     .attr("width", svgWidth)
     .attr("height", svgHeight);
@@ -35,8 +34,11 @@ var Yscale = d3.scaleLinear()
     .domain([0, d3.max(smokes)])
     .rang([0,height]);
 
-function renderCircles(circlesGroup, )
-
+function renderCircles(circlesGroup, Xscale){
+    circlesGroup.transition()
+        .duration(1000)
+        .attr("cx", d => )
+}
 
 
 
