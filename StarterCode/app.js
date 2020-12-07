@@ -1,6 +1,6 @@
 // @TODO: YOUR CODE HERE!
-var svgWidth = 600;
-var svgHeight = 600;
+var svgWidth = 800;
+var svgHeight = 800;
 
 var margin = {
     top: 80,
@@ -34,7 +34,6 @@ d3.csv("data.csv").then(function(data, err){
     if (err) throw err;
 
     data.forEach(function(data){
-        data.state = +data.state
         data.age = +data.age;
         data.smokes = +data.smokes;
     });
@@ -42,12 +41,12 @@ d3.csv("data.csv").then(function(data, err){
 
     // smokes = x, y = age
     var Xscale = d3.scaleLinear()
-        .domain([0, d3.max(age)])
+        .domain(d3.extent(data, (d) => d.age))
         .range([0, width]);
     
 
     var Yscale = d3.scaleLinear()
-        .domain([0, d3.max(smokes)])
+        .domain(d3.extent(data, (d) => d.smokes))
         .range([0,height]);
     
     
