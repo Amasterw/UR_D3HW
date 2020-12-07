@@ -47,7 +47,7 @@ d3.csv("data.csv").then(function(data, err){
 
     var Yscale = d3.scaleLinear()
         .domain(d3.extent(data, (d) => d.smokes))
-        .range([0,height]);
+        .range([height, 0]);
     
     
     var bottomAxis = d3.axisBottom(Xscale);
@@ -61,28 +61,24 @@ d3.csv("data.csv").then(function(data, err){
         .classed("x-axis", true)
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
-    
-    //circles = svg
-        //.selectAll("circle")
-        //.data(data, function(d){return d["Smokes"];});
-    
-    //chartGroup.append("g")
-        //.selectAll("dot")
-        //.data(data)
+    //append dots
     chartGroup.selectAll("dot")
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", d => Xscale(d[age]))
-        //.attr("cx", function (d) {return bottomAxis(d.age);})
+        .attr("cx", d => Xscale(d.age))
         .attr("cy", d => Yscale(d.smokes))
-        //.attr("cy", function (d) {return leftAxis(d.smokes);} )
-        .attr("r", 1.5)
+        .attr("r", 5)
         .style("fill", "#69b3a2")
-    //function renderCircles(circlesGroup, Xscale){
-    //circlesGroup.transition()
-    //.duration(1000)
-    //.attr("cx", d => d[chosenXAxis])
+    chartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left + 40)
+        .attr("x", 0 - (height / 2))
+        .attr("dy", "1em")
+        .attr("class", "axisText")
+        .text("Smokers");
+    chartGroup.append("text")
+        
 }).catch(function(error) {
     console.log(error);
 });
