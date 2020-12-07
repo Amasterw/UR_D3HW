@@ -62,14 +62,16 @@ d3.csv("data.csv").then(function(data, err){
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
     //append dots
-    chartGroup.selectAll("dot")
+    var circlesGroup = chartGroup.selectAll("dot")
         .data(data)
         .enter()
         .append("circle")
         .attr("cx", d => Xscale(d.age))
         .attr("cy", d => Yscale(d.smokes))
-        .attr("r", 5)
+        .attr("r", 20)
+        .attr("class", "stateCircle")
         .style("fill", "#69b3a2")
+    //append labels
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left + 40)
@@ -78,7 +80,36 @@ d3.csv("data.csv").then(function(data, err){
         .attr("class", "axisText")
         .text("Smokers");
     chartGroup.append("text")
-        
+        .attr("transform","translate(" + (width/2) + " ," + (height + margin.top + 1) + ")")
+        .style("text-anchor", "middle")
+        .text("Age");
+    //append Abbr
+    chartGroup.append("g")
+        .selectAll("text")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("x", (d) => Xscale(d.age)-0.5)
+        .attr("y", (d) => Yscale(d.smokes)+5)
+        .attr("class", "stateText")
+        .html(function (d){
+            return `${d.abbr}`
+        });
+  //add data to abbr
+    var toolTip = d3
+        .tip()
+        .attr("class", "d3-tip")
+        .html(function (d) {
+        return `${d.state}<br>Age: ${d.age}<br> Smokers: ${d.smokes}`;
+     });
+    chartGroup.call(toolTip);
+    circlesGroup
+        .on("click", function (data) {
+            toolTip.show(data, this);
+        })
+    .on("mouseout", function (data, index) {
+      toolTip.hide(data);
+    });
 }).catch(function(error) {
     console.log(error);
 });
